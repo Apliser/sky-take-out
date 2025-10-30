@@ -31,4 +31,6 @@ public interface EmployeeService {
      * @param id 员工id
      */
     void OnOrStop(Integer status, Long id);
+
+    Employee queryById(Long id);
 }
