@@ -3,8 +3,10 @@ package com.sky.controller.root;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
@@ -13,10 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,21 +80,46 @@ public class EmployeeController {
 
     /**
      * 新增员工
+     *
      * @param employeeDTO
      * @return
      */
     @ApiOperation("新增员工")
     @PostMapping
-    public Result<Employee> add(@RequestBody EmployeeDTO employeeDTO){
-        log.info("新增员工：{}",employeeDTO);
+    public Result<Employee> add(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("新增员工：{}", employeeDTO);
         employeeService.add(employeeDTO);
         return Result.success();
     }
 
     /**
-     * 启用或禁用员工账号
-     * @param employeeDTO
+     * 分页查询员工信息
+     *
+     * @param employeePageQueryDTO
      * @return
      */
+    @ApiOperation("分页查询员工信息")
+    @GetMapping("/page")
+    public Result<PageResult> selectByPage(EmployeePageQueryDTO employeePageQueryDTO) {
+        log.info("分页查询员工信息：{}", employeePageQueryDTO);
+        PageResult pageResult = employeeService.selectByPage(employeePageQueryDTO);
+        return Result.success(pageResult);
+    }
+
+
+    /**
+     * 启用或禁用员工账号
+     *
+     * @param status 启用或禁用状态码
+     * @param id     员工id
+     * @return
+     */
+    @ApiOperation("启用或禁用员工账号")
+    @PostMapping("/status/{status}")
+    public Result<String> OnOrStop(@PathVariable("status") Integer status, Long id) {
+        log.info("启用或禁用员工id为{}的账号：{}", id, status);
+        employeeService.OnOrStop(status, id);
+        return Result.success("操作成功");
+    }
 
 }
