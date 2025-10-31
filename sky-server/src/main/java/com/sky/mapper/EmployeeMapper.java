@@ -41,5 +41,10 @@ public interface EmployeeMapper {
      */
     void update(Employee employee);
 
+    /**
+     * 根据id查询员工信息
+     * @param id 员工id
+     * @return 员工信息
+     */
     Employee selectById(Long id);
 }
