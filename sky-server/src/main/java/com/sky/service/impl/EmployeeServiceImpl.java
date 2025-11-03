@@ -99,7 +99,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .idNumber(employeeDTO.getIdNumber())
                 .status(StatusConstant.ENABLE)
                 .createTime(now)
-                .updateTime(now)//TODO 后期需要根据登录用户id进行设置
+                .updateTime(now)//
                 .createUser(idConstant)
                 .updateUser(idConstant)
                 .build();
@@ -129,7 +129,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .status(status)
                 .id(id)
                 .updateTime(LocalDateTime.now())
-                .updateUser(idConstant)//TODO 后期需要根据登录用户id进行设置
+                .updateUser(idConstant)//
                 .build();
         employeeMapper.update(employee);
     }
@@ -180,7 +180,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .phone(employeeDTO.getPhone())
                 .idNumber(employeeDTO.getIdNumber())
                 .updateTime(now)
-                .updateUser(BaseContext.getCurrentId())
+                .updateUser(idConstant)
                 .build();
         employeeMapper.update(employee);
     }
