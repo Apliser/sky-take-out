@@ -24,7 +24,6 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-
     /**
      * 分页查询分类信息
      * @param categoryPageQueryDTO
@@ -51,11 +50,29 @@ public class CategoryController {
         return Result.success("操作成功");
     }
 
+    /**
+     * 根据类型查询分类信息
+     * @param type
+     * @return
+     */
     @ApiOperation("根据类型查询分类信息")
     @GetMapping("/list")
     public Result<List<Category>> SelectByType(@RequestParam("type") Integer type){
         log.info("根据类型查询分类信息");
         List<Category> categoryList = categoryService.SelectByType(type);
         return Result.success(categoryList);
+    }
+
+    /**
+     * 根据id删除分类
+     * @param id
+     * @return
+     */
+    @ApiOperation("根据id删除分类")
+    @DeleteMapping
+    public Result<String> DeleteById(@RequestParam("id") Long id){
+        log.info("根据id删除分类");
+        categoryService.DeleteById(id);
+        return Result.success("操作成功");
     }
 }

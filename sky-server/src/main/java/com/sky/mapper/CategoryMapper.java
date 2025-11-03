@@ -27,4 +27,6 @@ public interface CategoryMapper {
     void addCategory(Category category);
 
     List<Category> SelectByType(Integer type);
+
+    void DeleteById(Long id);
 }

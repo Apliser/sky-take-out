@@ -65,4 +65,12 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categories = categoryMapper.SelectByType(type);
         return categories;
     }
+
+    /**
+     * 根据id删除分类
+     * @param id
+     */
+    public void DeleteById(Long id) {
+        categoryMapper.DeleteById(id);
+    }
 }
