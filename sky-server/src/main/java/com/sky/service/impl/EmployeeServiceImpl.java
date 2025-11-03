@@ -167,4 +167,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.update(employee2);
 
     }
+
+    /**
+     * 更新员工信息
+     * @param employeeDTO 员工信息DTO
+     */
+    public void updateInfo(EmployeeDTO employeeDTO) {
+        LocalDateTime now =LocalDateTime.now();
+        Employee employee =Employee.builder()
+                .id(employeeDTO.getId())
+                .name(employeeDTO.getName())
+                .phone(employeeDTO.getPhone())
+                .idNumber(employeeDTO.getIdNumber())
+                .updateTime(now)
+                .updateUser(BaseContext.getCurrentId())
+                .build();
+        employeeMapper.update(employee);
+    }
 }

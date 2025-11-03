@@ -148,4 +148,18 @@ public class EmployeeController {
         employeeService.updatePassword(employeePasswordDTO);
         return Result.success("操作成功");
     }
+
+
+    /**
+     * 更新员工信息
+     * @param employeeDTO
+     * @return
+     */
+    @ApiOperation("更新员工信息")
+    @PutMapping
+    public Result<String> updateInfo(@RequestBody EmployeeDTO employeeDTO){
+        log.info("更新员工信息");
+        employeeService.updateInfo(employeeDTO);
+        return Result.success("操作成功");
+    }
 }

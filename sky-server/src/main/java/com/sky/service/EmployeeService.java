@@ -36,4 +36,6 @@ public interface EmployeeService {
     Employee queryById(Long id);
 
     void updatePassword(EmployeePasswordDTO employeePasswordDTO);
+
+    void updateInfo(EmployeeDTO employeeDTO);
 }
