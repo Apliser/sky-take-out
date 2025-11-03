@@ -17,4 +17,10 @@ public interface CategoryMapper {
      */
     Page<Category> SelectByPage(CategoryPageQueryDTO categoryPageQueryDTO);
 
+
+    /**
+     * 新增分类
+     * @param category
+     */
+    void addCategory(Category category);
 }
