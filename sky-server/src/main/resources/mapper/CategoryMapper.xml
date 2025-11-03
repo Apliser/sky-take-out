@@ -11,10 +11,18 @@
         </where>
         order by sort
     </select>
-
     <!--新增分类-->
     <insert id="addCategory">
         insert into category (id,name,type,sort,create_time,update_time,create_user,update_user,status)
         values (#{id},#{name},#{type},#{sort},#{createTime},#{updateTime},#{createUser},#{updateUser},#{status})
     </insert>
+    <!--根据类型查询分类信息-->
+    <select id="SelectByType" resultType="com.sky.entity.Category">
+        select * from category
+        <where>
+            and type=#{type}
+        </where>
+        order by sort
+    </select>
+
 </mapper>

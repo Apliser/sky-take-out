@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -27,7 +28,6 @@ public class CategoryServiceImpl implements CategoryService {
      * @param categoryPageQueryDTO
      * @return
      */
-    @Override
     public PageResult SelectByPage(CategoryPageQueryDTO categoryPageQueryDTO) {
         PageHelper.startPage(categoryPageQueryDTO.getPage(), categoryPageQueryDTO.getPageSize());
         Page<Category> page = categoryMapper.SelectByPage(categoryPageQueryDTO);
@@ -53,5 +53,16 @@ public class CategoryServiceImpl implements CategoryService {
                 .status(StatusConstant.ENABLE)
                 .build();
         categoryMapper.addCategory(category);
+    }
+
+
+    /**
+     * 根据类型查询分类信息
+     * @param type
+     * @return
+     */
+    public List<Category> SelectByType(Integer type) {
+        List<Category> categories = categoryMapper.SelectByType(type);
+        return categories;
     }
 }
