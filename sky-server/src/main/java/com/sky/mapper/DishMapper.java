@@ -11,5 +11,7 @@ import java.util.List;
 public interface DishMapper {
     Page<Dish> selectByPage(DishPageQueryDTO dishPageQueryDTO);
 
-    List<Dish> QueryById(Long categoryId);
+    List<Dish> QueryByCategoryId(Long categoryId);
+
+    Dish QueryById(Long id);
 }

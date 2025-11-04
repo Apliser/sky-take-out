@@ -44,4 +44,6 @@ public interface CategoryMapper {
      * @param category
      */
     void Update(Category category);
+
+    Category QueryById(Long id);
 }
