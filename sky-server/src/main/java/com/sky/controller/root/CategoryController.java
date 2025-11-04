@@ -75,4 +75,18 @@ public class CategoryController {
         categoryService.DeleteById(id);
         return Result.success("操作成功");
     }
+
+    /**
+     * 启用或停用分类
+     * @param status
+     * @param id
+     * @return
+     */
+    @ApiOperation("启用或停用分类")
+    @PostMapping("/status/{status}")
+    public Result<String> OnOrStop(@PathVariable("status") Integer status, @RequestParam("id") Long id){
+        log.info("根据id启用或停用分类");
+        categoryService.OnOrStop(status, id);
+        return Result.success("操作成功");
+    }
 }

@@ -15,4 +15,6 @@ public interface CategoryService {
     List<Category> SelectByType(Integer type);
 
     void DeleteById(Long id);
+
+    void OnOrStop(Integer status, Long id);
 }
