@@ -89,4 +89,17 @@ public class CategoryController {
         categoryService.OnOrStop(status, id);
         return Result.success("操作成功");
     }
+
+    /**
+     * 更新分类
+     * @param categoryDTO
+     * @return
+     */
+    @ApiOperation("更新分类")
+    @PutMapping
+    public Result<String> Update(@RequestBody CategoryDTO categoryDTO){
+        log.info("更新分类");
+        categoryService.Update(categoryDTO);
+        return Result.success("操作成功");
+    }
 }

@@ -32,7 +32,7 @@
     <update id="Update">
         update category
         <set>
-            <if test="name!=null">name=#{name},</if>
+            <if test="name!=null and name!=''">name=#{name},</if>
             <if test="type!=null">type=#{type},</if>
             <if test="sort!=null">sort=#{sort},</if>
             <if test="updateTime!=null">update_time=#{updateTime},</if>

@@ -90,4 +90,22 @@ public class CategoryServiceImpl implements CategoryService {
                 .build();
         categoryMapper.Update(category);
     }
+
+    /**
+     * 更新分类
+     * @param categoryDTO
+     */
+    public void Update(CategoryDTO categoryDTO) {
+        LocalDateTime now = LocalDateTime.now();
+        Long idConstant = BaseContext.getCurrentId();
+        Category category =Category.builder()
+                .id(categoryDTO.getId())
+                .type(categoryDTO.getType())
+                .name(categoryDTO.getName())
+                .sort(categoryDTO.getSort())
+                .updateTime(now)
+                .updateUser(idConstant) // TODO 从线程中获取用户id常量
+                .build();
+        categoryMapper.Update(category);
+    }
 }

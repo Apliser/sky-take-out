@@ -17,4 +17,6 @@ public interface CategoryService {
     void DeleteById(Long id);
 
     void OnOrStop(Integer status, Long id);
+
+    void Update(CategoryDTO categoryDTO);
 }
