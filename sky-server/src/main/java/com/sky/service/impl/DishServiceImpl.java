@@ -10,11 +10,25 @@ import com.sky.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class DishServiceImpl implements DishService {
 
     @Autowired
     private DishMapper dishMapper;
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId 分类id
+     * @return
+     */
+    public List<Dish> QueryById(Long categoryId) {
+        List<Dish> list = new ArrayList<Dish>();
+        list = dishMapper.QueryById(categoryId);
+        return list;
+    }
 
     /**
      * 菜品分页查询

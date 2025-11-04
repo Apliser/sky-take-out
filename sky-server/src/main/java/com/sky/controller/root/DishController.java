@@ -37,4 +37,12 @@ public class DishController {
         PageResult pageResult = dishService.SelectByPage(dishPageQueryDTO);
         return Result.success(pageResult);
     }
+
+    @GetMapping("/list")
+    @ApiOperation("根据分类id查询菜品")
+    public Result<List<Dish>> QueryById(@RequestParam("categoryId") Long categoryId){
+        log.info("根据分类id查询菜品");
+        List<Dish> dishes=dishService.QueryById(categoryId);
+        return Result.success(dishes);
+    }
 }
