@@ -162,7 +162,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .id(employeePasswordDTO.getId())
                 .password(DigestUtils.md5DigestAsHex(employeePasswordDTO.getNewPassword().getBytes()))
                 .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
+                .updateUser(idConstant)
                 .build();
         employeeMapper.update(employee2);
 

@@ -73,4 +73,21 @@ public class CategoryServiceImpl implements CategoryService {
     public void DeleteById(Long id) {
         categoryMapper.DeleteById(id);
     }
+
+    /**
+     * 启用或停用分类
+     * @param status
+     * @param id
+     */
+    public void OnOrStop(Integer status, Long id) {
+        LocalDateTime now = LocalDateTime.now();
+        Long idConstant = BaseContext.getCurrentId();
+        Category category = Category.builder()
+                .id(id)
+                .status(status)
+                .updateTime(now)
+                .updateUser(idConstant) // TODO 从线程中获取用户id常量
+                .build();
+        categoryMapper.Update(category);
+    }
 }

@@ -26,7 +26,22 @@ public interface CategoryMapper {
      */
     void addCategory(Category category);
 
+    /**
+     * 根据类型查询分类
+     * @param type
+     * @return
+     */
     List<Category> SelectByType(Integer type);
 
+    /**
+     * 根据id删除分类
+     * @param id
+     */
     void DeleteById(Long id);
+
+    /**
+     * 更新分类
+     * @param category
+     */
+    void Update(Category category);
 }
