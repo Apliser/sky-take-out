@@ -1,5 +1,6 @@
 package com.sky.controller.root;
 
+import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.result.PageResult;
@@ -61,4 +62,32 @@ public class DishController {
         DishVO dishVO=dishService.QueryById(id);
         return Result.success(dishVO);
     }
+
+    /**
+     * 菜品启用或禁用
+     * @param status
+     * @param id
+     * @return
+     */
+    @ApiOperation("菜品启用或禁用")
+    @PostMapping("/status/{status}")
+    public Result<String> OnOrStop(@PathVariable("status") Integer status,@RequestParam("id") Long id){
+        log.info("菜品启用或禁用：{}，id：{}",status,id);
+        dishService.OnOrStop(status,id);
+        return Result.success("操作成功");
+    }
+
+    /**
+     * 新增菜品
+     * @param dishDTO
+     * @return
+     */
+    @ApiOperation("新增菜品")
+    @PostMapping
+    public Result<String> add(@RequestBody DishDTO dishDTO) {
+        log.info("新增菜品");
+        dishService.add(dishDTO);
+        return Result.success("新增成功");
+    }
+
 }

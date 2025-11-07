@@ -9,4 +9,6 @@ import java.util.List;
 public interface DishFlavorMapper {
 
     List<DishFlavor> QueryByDishId(Long id);
+
+    void addFlavors(List<DishFlavor> flavors);
 }

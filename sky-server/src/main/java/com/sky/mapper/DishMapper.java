@@ -14,4 +14,8 @@ public interface DishMapper {
     List<Dish> QueryByCategoryId(Long categoryId);
 
     Dish QueryById(Long id);
+
+    void Update(Dish dish);
+
+    Long Insert(Dish dish);
 }
