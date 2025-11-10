@@ -18,4 +18,6 @@ public interface DishMapper {
     void Update(Dish dish);
 
     Long Insert(Dish dish);
+
+    void batchDelete(List<Long> ids);
 }

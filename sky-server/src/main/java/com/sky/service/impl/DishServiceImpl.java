@@ -127,5 +127,15 @@ public class DishServiceImpl implements DishService {
         }
     }
 
+    /**
+     * 批量删除菜品
+     * @param ids
+     */
+    public void batchDelete(List<Long> ids) {
+        //首先删除菜品对应的口味
+        dishFlavorMapper.batchDeleteByDishIds(ids);
+        dishMapper.batchDelete(ids);
+    }
+
 
 }

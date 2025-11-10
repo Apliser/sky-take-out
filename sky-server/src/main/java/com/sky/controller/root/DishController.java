@@ -10,6 +10,7 @@ import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,6 +89,19 @@ public class DishController {
         log.info("新增菜品");
         dishService.add(dishDTO);
         return Result.success("新增成功");
+    }
+
+    /**
+     * 批量删除菜品
+     * @param ids
+     * @return
+     */
+    @ApiOperation("批量删除菜品")
+    @DeleteMapping()
+    public Result<String> batchDelete(@RequestParam("ids") List<Long> ids) {
+        log.info("删除菜品：{}",ids);
+        dishService.batchDelete(ids);
+        return Result.success("删除成功");
     }
 
 }

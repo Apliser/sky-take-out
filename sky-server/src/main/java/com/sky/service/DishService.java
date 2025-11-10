@@ -19,4 +19,6 @@ public interface DishService {
     void OnOrStop(Integer status, Long id);
 
     void add(DishDTO dishDTO);
+
+    void batchDelete(List<Long> ids);
 }
