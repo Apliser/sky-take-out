@@ -4,11 +4,15 @@ import com.sky.context.BaseContext;
 import com.sky.dto.SetmealDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetmealMapper;
+import com.sky.result.Result;
 import com.sky.service.SetmealService;
+import com.sky.vo.SetmealVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +23,8 @@ public class SetmealServiceImpl implements SetmealService {
     private SetmealMapper setmealMapper;
     @Autowired
     private SetMealDishMapper setMealDishMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     /**
      * 新增套餐
@@ -50,4 +56,24 @@ public class SetmealServiceImpl implements SetmealService {
         });
 
     }
+
+    /**
+     * 根据id查询套餐信息
+     * @param id 套餐id
+     * @return 套餐信息
+     */
+    public SetmealVO QueryById(Long id) {
+        Setmeal setmeal = setmealMapper.QueryById(id);
+        SetmealVO setmealVO = new SetmealVO();
+        //将setmeal中的属性快速抽取到setmealVO中
+        org.springframework.beans.BeanUtils.copyProperties(setmeal, setmealVO);
+        //查询分类名称
+        String categoryName = categoryMapper.QueryById(setmeal.getCategoryId()).getName();
+        setmealVO.setCategoryName(categoryName);
+        //查询套餐包含的菜品
+        List<SetmealDish> setmealDishes = setMealDishMapper.QueryBySetmealId(id);
+        setmealVO.setSetmealDishes(setmealDishes);
+        return setmealVO;
+    }
+
 }
