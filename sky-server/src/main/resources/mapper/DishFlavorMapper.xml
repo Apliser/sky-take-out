@@ -9,6 +9,17 @@
             (#{flavor.dishId}, #{flavor.name}, #{flavor.value})
         </foreach>
     </insert>
+    <!--更新菜品口味-->
+    <update id="updateFlavors">
+        update dish_flavor
+        <set>
+            name = #{name},
+            value = #{value}
+        </set>
+        <where>
+            and dish_id = #{dishId}
+        </where>
+    </update>
     <!--根据菜品id批量删除菜品口味-->
     <delete id="batchDeleteByDishIds">
         delete from dish_flavor where dish_id in

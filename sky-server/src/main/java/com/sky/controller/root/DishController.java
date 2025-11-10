@@ -104,4 +104,17 @@ public class DishController {
         return Result.success("删除成功");
     }
 
+    /**
+     * 更新菜品
+     * @param dishDTO
+     * @return
+     */
+    @ApiOperation("更新菜品")
+    @PutMapping
+    public Result<String> update(@RequestBody DishDTO dishDTO) {
+        log.info("更新菜品");
+        dishService.Update(dishDTO);
+        return Result.success("更新成功");
+    }
+
 }

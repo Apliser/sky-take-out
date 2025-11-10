@@ -1,6 +1,5 @@
 package com.sky.service.impl;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.context.BaseContext;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -31,11 +31,11 @@ public class DishServiceImpl implements DishService {
     @Autowired
     private CategoryMapper categoryMapper;
 
-    /**
+     /**
      * 根据分类id查询菜品
      *
      * @param categoryId 分类id
-     * @return
+     * @return 菜品列表
      */
     public List<Dish> QueryByCategoryId(Long categoryId) {
         List<Dish> list = new ArrayList<Dish>();
@@ -46,8 +46,8 @@ public class DishServiceImpl implements DishService {
     /**
      * 菜品分页查询
      *
-     * @param dishPageQueryDTO
-     * @return
+     * @param dishPageQueryDTO 菜品分页查询数据传输对象
+     * @return 菜品分页结果对象
      */
     public PageResult SelectByPage(DishPageQueryDTO dishPageQueryDTO) {
         PageHelper.startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
@@ -60,7 +60,7 @@ public class DishServiceImpl implements DishService {
      * 根据id查询菜品
      *
      * @param id 菜品id
-     * @return
+     * @return 菜品视图对象
      */
     public DishVO QueryById(Long id) {
         Dish dish = dishMapper.QueryById(id);
@@ -100,7 +100,7 @@ public class DishServiceImpl implements DishService {
     /**
      * 新增菜品
      *
-     * @param dishDTO
+     * @param dishDTO 菜品数据传输对象
      */
     public void add(DishDTO dishDTO) {
         LocalDateTime now = LocalDateTime.now();
@@ -120,16 +120,17 @@ public class DishServiceImpl implements DishService {
         else dish.setStatus(dishDTO.getStatus());
         dishMapper.Insert(dish);
         Long dishId = dish.getId();
-        if (dishDTO.getFlavors() != null ){
+        if (dishDTO.getFlavors() != null) {
             List<DishFlavor> dishFlavors = dishDTO.getFlavors();
             dishFlavors.forEach(dishFlavor -> dishFlavor.setDishId(dishId)); //TODO 后期添加新增的dish的id(已解决)
             dishFlavorMapper.addFlavors(dishFlavors);
         }
     }
 
-    /**
+     /**
      * 批量删除菜品
-     * @param ids
+     *
+     * @param ids 菜品id列表
      */
     public void batchDelete(List<Long> ids) {
         //首先删除菜品对应的口味
@@ -137,5 +138,38 @@ public class DishServiceImpl implements DishService {
         dishMapper.batchDelete(ids);
     }
 
+     /**
+     * 更新菜品
+     *
+     * @param dishDTO 菜品数据传输对象
+     */
+    public void Update(DishDTO dishDTO) {
+        Long idConstant = BaseContext.getCurrentId();
+        LocalDateTime now = LocalDateTime.now();
+        Long dishId = dishDTO.getId();
+        //判断口味是否为空，如果部位空，则修改对应的口味
+        if(dishDTO.getFlavors() != null) {
+            List<DishFlavor> dishFlavors = dishDTO.getFlavors();
+            dishFlavors.forEach(dishFlavor -> {
+                dishFlavor.setDishId(dishId);
+                dishFlavorMapper.updateFlavors(dishFlavor);
+            });//TODO 需要处理菜品口味的列表问题
+        }
+        //更新菜品信息
+        Dish dish = Dish.builder()
+                .id(dishId)
+                .name(dishDTO.getName())
+                .categoryId(dishDTO.getCategoryId())
+                .price(dishDTO.getPrice())
+                .image(dishDTO.getImage())
+                .description(dishDTO.getDescription())
+                .updateTime(now)
+                .updateUser(idConstant)
+                .build();
+        if (dishDTO.getStatus() == null) dish.setStatus(1);
+        else dish.setStatus(dishDTO.getStatus());
+        dishMapper.Update(dish);
+
+    }
 
 }

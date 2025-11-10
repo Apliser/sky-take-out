@@ -21,4 +21,6 @@ public interface DishService {
     void add(DishDTO dishDTO);
 
     void batchDelete(List<Long> ids);
+
+    void Update(DishDTO dishDTO);
 }
