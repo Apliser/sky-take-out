@@ -1,12 +1,17 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sky.context.BaseContext;
 import com.sky.dto.SetmealDTO;
+import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetmealMapper;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetmealService;
 import com.sky.vo.SetmealVO;
@@ -15,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -74,6 +80,28 @@ public class SetmealServiceImpl implements SetmealService {
         List<SetmealDish> setmealDishes = setMealDishMapper.QueryBySetmealId(id);
         setmealVO.setSetmealDishes(setmealDishes);
         return setmealVO;
+    }
+
+    /**
+     *
+     * @param setmealPageQueryDTO 传输信息
+     * @return 返回结果
+     */
+    public PageResult QueryByPage(SetmealPageQueryDTO setmealPageQueryDTO) {
+        PageHelper.startPage(setmealPageQueryDTO.getPage(), setmealPageQueryDTO.getPageSize());
+        List<Setmeal> setmeals = setmealMapper.QueryByPage(setmealPageQueryDTO);
+        List<SetmealVO> setmealVOS = new ArrayList<>();
+        setmeals.forEach(setmeal -> {
+            SetmealVO setmealVO = new SetmealVO();
+            org.springframework.beans.BeanUtils.copyProperties(setmeal, setmealVO);
+            setmealVO.setCategoryName(categoryMapper.QueryById(setmeal.getCategoryId()).getName());
+            //查询套餐包含的菜品
+            setmealVO.setSetmealDishes(setMealDishMapper.QueryBySetmealId(setmeal.getId()));
+            setmealVOS.add(setmealVO);
+        });
+        PageInfo<SetmealVO> pageInfo = new PageInfo<>(setmealVOS); //TODO 使用PageHelper的PageInfo类
+        PageResult pageResult = new PageResult(pageInfo.getTotal(), pageInfo.getList());
+        return pageResult;
     }
 
 }
