@@ -1,23 +1,22 @@
 package com.sky.service.impl;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sky.context.BaseContext;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.mapper.CategoryMapper;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
-import com.sky.result.Result;
 import com.sky.service.SetmealService;
 import com.sky.vo.SetmealVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,6 +30,8 @@ public class SetmealServiceImpl implements SetmealService {
     private SetMealDishMapper setMealDishMapper;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private DishMapper dishMapper;
 
     /**
      * 新增套餐
@@ -102,6 +103,73 @@ public class SetmealServiceImpl implements SetmealService {
         PageInfo<SetmealVO> pageInfo = new PageInfo<>(setmealVOS); //TODO 使用PageHelper的PageInfo类
         PageResult pageResult = new PageResult(pageInfo.getTotal(), pageInfo.getList());
         return pageResult;
+    }
+
+    /**
+     * 批量删除套餐
+     * @param ids 套餐id列表
+     * @return 删除的套餐列表
+     */
+    public Long batchDelete(List<Long> ids) {
+        //删除套餐与菜品的关系
+        setMealDishMapper.batchDeleteBySetmealIds(ids);
+        //删除套餐
+        Long influenceCount = setmealMapper.batchDelete(ids);
+        return influenceCount;
+    }
+
+    /**
+     * 套餐起售或停售
+     * @param status 套餐状态（1起售，0停售）
+     * @param id     套餐id
+     */
+    public void OnOrStop(Integer status, Long id) {
+        LocalDateTime now = LocalDateTime.now();
+        Long idConstant = BaseContext.getCurrentId();
+        //更新状态
+        Setmeal setmeal = Setmeal.builder()
+                .id(id)
+                .status(status)
+                .updateTime(now)
+                .updateUser(idConstant)
+                .build();
+        setmealMapper.Update(setmeal);
+    }
+
+    /**
+     * 更新套餐信息
+     * @param setmealDTO 套餐传输信息
+     * @return 更新的行数
+     */
+    public Long Update(SetmealDTO setmealDTO) {
+        LocalDateTime now = LocalDateTime.now();
+        Long idConstant = BaseContext.getCurrentId();
+        List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
+        //设置套餐id
+        setmealDishes.forEach(setmealDish -> setmealDish.setSetmealId(setmealDTO.getId()));
+        //更新套餐与菜品的关系表
+        setmealDishes.forEach(setmealDish -> setMealDishMapper.Update(setmealDish));
+        //更新菜品
+        setmealDishes.forEach(setmealDish -> {
+                //更新菜品
+                Dish dish = Dish.builder()
+                        .id(setmealDish.getDishId())
+                        .price(setmealDish.getPrice())
+                        .name(setmealDish.getName())
+                        .updateTime(now)
+                        .updateUser(idConstant)
+                        .build();
+                dishMapper.Update(dish);
+        });
+        // 更新套餐
+        Setmeal setmeal = Setmeal.builder()
+                .updateTime(now)
+                .updateUser(idConstant)
+                .build();
+        org.springframework.beans.BeanUtils.copyProperties(setmealDTO, setmeal);
+        if(setmeal.getStatus()==null) setmeal.setStatus(1);
+        Long influenceCount = setmealMapper.Update(setmeal);
+        return influenceCount;
     }
 
 }

@@ -9,6 +9,30 @@
         values (#{categoryId}, #{name}, #{price}, #{description}, #{image}, #{createTime}, #{updateTime}, #{createUser},
                 #{updateUser})
     </insert>
+    <!-- 更新套餐 -->
+    <update id="Update">
+        update setmeal
+        <set>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="name != null and name!=''">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <!-- 批量删除套餐 -->
+    <delete id="batchDelete">
+        delete from setmeal where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
     <!-- 根据id查询套餐信息 -->
     <select id="QueryById" resultType="com.sky.entity.Setmeal">
         select * from setmeal

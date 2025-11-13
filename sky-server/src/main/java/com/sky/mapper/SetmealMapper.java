@@ -16,4 +16,8 @@ public interface SetmealMapper {
     Setmeal QueryById(Long id);
 
     List<Setmeal> QueryByPage(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    Long batchDelete(List<Long> ids);
+
+    Long Update(Setmeal setmeal);
 }

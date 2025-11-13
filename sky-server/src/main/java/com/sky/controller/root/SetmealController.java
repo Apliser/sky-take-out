@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Api("套餐相关接口")
 @Slf4j
@@ -62,5 +64,48 @@ public class SetmealController {
         log.info("分页查询套餐信息");
         PageResult pageResult = setmealService.QueryByPage(setmealPageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    /**
+     * 批量删除套餐
+     *
+     * @param ids 套餐id列表
+     * @return 删除的套餐列表
+     */
+    @ApiOperation("批量删除套餐")
+    @DeleteMapping()
+    public Result<Long> batchDelete(@RequestParam("ids") List<Long> ids){
+        log.info("批量删除套餐：{}", ids);
+        Long influenceCount = setmealService.batchDelete(ids);
+        return Result.success(influenceCount);
+    }
+
+    /**
+     * 套餐起售或停售
+     *
+     * @param status 套餐状态（1起售，0停售）
+     * @param id     套餐id
+     * @return 操作结果
+     */
+    @ApiOperation("套餐起售或停售")
+    @PostMapping("/status/{status}")
+    public Result<String> OnOrStop(@PathVariable("status") Integer status , @RequestParam("id") Long id){
+        log.info("套餐起售或停售");
+        setmealService.OnOrStop(status, id);
+        return Result.success("操作成功");
+    }
+
+    /**
+     * 更新套餐信息
+     *
+     * @param setmealDTO 套餐传输信息
+     * @return 更新的行数
+     */
+    @ApiOperation("套餐更新")
+    @PutMapping()
+    public Result<Long> update(@RequestBody SetmealDTO setmealDTO){
+        log.info("套餐更新");
+        Long InfluenceCount = setmealService.Update(setmealDTO);
+        return Result.success(InfluenceCount);
     }
 }
