@@ -36,11 +36,11 @@ public class EmployeeController {
     private JwtProperties jwtProperties;
 
 
-    /**
+     /**
      * 登录
      *
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO 员工登录传输信息
+     * @return 登录成功信息
      */
     @ApiOperation("员工登录")
     @PostMapping("/login")
@@ -68,10 +68,10 @@ public class EmployeeController {
         return Result.success(employeeLoginVO);
     }
 
-    /**
+     /**
      * 退出
      *
-     * @return
+     * @return 操作成功
      */
     @ApiOperation("员工退出")
     @PostMapping("/logout")
@@ -79,11 +79,11 @@ public class EmployeeController {
         return Result.success();
     }
 
-    /**
+     /**
      * 新增员工
      *
-     * @param employeeDTO
-     * @return
+     * @param employeeDTO 员工传输信息
+     * @return 新增成功
      */
     @ApiOperation("新增员工")
     @PostMapping
@@ -93,11 +93,11 @@ public class EmployeeController {
         return Result.success();
     }
 
-    /**
+     /**
      * 分页查询员工信息
      *
-     * @param employeePageQueryDTO
-     * @return
+     * @param employeePageQueryDTO 分页查询参数
+     * @return 返回分页结果
      */
     @ApiOperation("分页查询员工信息")
     @GetMapping("/page")
@@ -113,7 +113,7 @@ public class EmployeeController {
      *
      * @param status 启用或禁用状态码
      * @param id     员工id
-     * @return
+     * @return 操作成功
      */
     @ApiOperation("启用或禁用员工账号")
     @PostMapping("/status/{status}")
@@ -136,10 +136,10 @@ public class EmployeeController {
         return Result.success(employee);
     }
 
-    /**
+     /**
      * 更新员工密码
-     * @param
-     * @return
+     * @param employeePasswordDTO 员工密码传输信息
+     * @return 更新成功
      */
     @ApiOperation("更新员工密码")
     @PutMapping("/editPassword")
@@ -152,8 +152,8 @@ public class EmployeeController {
 
     /**
      * 更新员工信息
-     * @param employeeDTO
-     * @return
+     * @param employeeDTO 员工传输信息
+     * @return 更新成功
      */
     @ApiOperation("更新员工信息")
     @PutMapping

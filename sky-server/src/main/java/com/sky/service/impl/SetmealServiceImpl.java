@@ -2,7 +2,6 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sky.context.BaseContext;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Dish;
@@ -18,7 +17,6 @@ import com.sky.vo.SetmealVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +36,6 @@ public class SetmealServiceImpl implements SetmealService {
      * @param setmealDTO 套餐传输信息
      */
     public void add(SetmealDTO setmealDTO) {
-        Long idConstant = BaseContext.getCurrentId();
-        LocalDateTime now = LocalDateTime.now();
         // 新增套餐
         Setmeal setmeal = Setmeal.builder()
                 .categoryId(setmealDTO.getCategoryId())
@@ -48,10 +44,6 @@ public class SetmealServiceImpl implements SetmealService {
                 .status(setmealDTO.getStatus())
                 .description(setmealDTO.getDescription())
                 .image(setmealDTO.getImage())
-                .createTime(now)
-                .updateTime(now)
-                .createUser(idConstant)
-                .updateUser(idConstant)
                 .build();
         setmealMapper.add(setmeal);
         // 新增套餐与菜品的关系
@@ -124,14 +116,10 @@ public class SetmealServiceImpl implements SetmealService {
      * @param id     套餐id
      */
     public void OnOrStop(Integer status, Long id) {
-        LocalDateTime now = LocalDateTime.now();
-        Long idConstant = BaseContext.getCurrentId();
         //更新状态
         Setmeal setmeal = Setmeal.builder()
                 .id(id)
                 .status(status)
-                .updateTime(now)
-                .updateUser(idConstant)
                 .build();
         setmealMapper.Update(setmeal);
     }
@@ -142,8 +130,6 @@ public class SetmealServiceImpl implements SetmealService {
      * @return 更新的行数
      */
     public Long Update(SetmealDTO setmealDTO) {
-        LocalDateTime now = LocalDateTime.now();
-        Long idConstant = BaseContext.getCurrentId();
         List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
         //设置套餐id
         setmealDishes.forEach(setmealDish -> setmealDish.setSetmealId(setmealDTO.getId()));
@@ -156,15 +142,11 @@ public class SetmealServiceImpl implements SetmealService {
                         .id(setmealDish.getDishId())
                         .price(setmealDish.getPrice())
                         .name(setmealDish.getName())
-                        .updateTime(now)
-                        .updateUser(idConstant)
                         .build();
                 dishMapper.Update(dish);
         });
         // 更新套餐
         Setmeal setmeal = Setmeal.builder()
-                .updateTime(now)
-                .updateUser(idConstant)
                 .build();
         org.springframework.beans.BeanUtils.copyProperties(setmealDTO, setmeal);
         if(setmeal.getStatus()==null) setmeal.setStatus(1);

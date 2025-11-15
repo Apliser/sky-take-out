@@ -24,10 +24,10 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    /**
+     /**
      * 分页查询分类信息
-     * @param categoryPageQueryDTO
-     * @return
+     * @param categoryPageQueryDTO 分页查询参数
+     * @return 返回分页结果
      */
     @ApiOperation("分页查询分类信息")
     @GetMapping("/page")
@@ -37,10 +37,10 @@ public class CategoryController {
         return Result.success(pageResult);
     }
 
-    /**
+     /**
      * 新增分类
-     * @param categoryDTO
-     * @return
+     * @param categoryDTO 分类传输信息
+     * @return 新增成功
      */
     @ApiOperation("新增分类")
     @PostMapping
@@ -50,10 +50,10 @@ public class CategoryController {
         return Result.success("操作成功");
     }
 
-    /**
+     /**
      * 根据类型查询分类信息
-     * @param type
-     * @return
+     * @param type 分类类型
+     * @return 分类列表
      */
     @ApiOperation("根据类型查询分类信息")
     @GetMapping("/list")
@@ -63,24 +63,24 @@ public class CategoryController {
         return Result.success(categoryList);
     }
 
-    /**
+     /**
      * 根据id删除分类
-     * @param id
-     * @return
+     * @param id 分类id
+     * @return 删除成功
      */
     @ApiOperation("根据id删除分类")
-    @DeleteMapping
+    @DeleteMapping//TODO 分类下有菜品或者套餐时不能删除
     public Result<String> DeleteById(@RequestParam("id") Long id){
         log.info("根据id删除分类");
         categoryService.DeleteById(id);
         return Result.success("操作成功");
     }
 
-    /**
+     /**
      * 启用或停用分类
-     * @param status
-     * @param id
-     * @return
+     * @param status 状态
+     * @param id 分类id
+     * @return 操作成功
      */
     @ApiOperation("启用或停用分类")
     @PostMapping("/status/{status}")
@@ -90,10 +90,10 @@ public class CategoryController {
         return Result.success("操作成功");
     }
 
-    /**
+     /**
      * 更新分类
-     * @param categoryDTO
-     * @return
+     * @param categoryDTO 分类传输信息
+     * @return 更新成功
      */
     @ApiOperation("更新分类")
     @PutMapping

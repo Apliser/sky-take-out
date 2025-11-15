@@ -2,7 +2,6 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.sky.context.BaseContext;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
@@ -16,10 +15,8 @@ import com.sky.vo.DishVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.function.Consumer;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -38,8 +35,7 @@ public class DishServiceImpl implements DishService {
      * @return 菜品列表
      */
     public List<Dish> QueryByCategoryId(Long categoryId) {
-        List<Dish> list = new ArrayList<Dish>();
-        list = dishMapper.QueryByCategoryId(categoryId);
+        List<Dish> list = dishMapper.QueryByCategoryId(categoryId);
         return list;
     }
 
@@ -91,8 +87,6 @@ public class DishServiceImpl implements DishService {
         Dish dish = Dish.builder()
                 .id(id)
                 .status(status)
-                .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
                 .build();
         dishMapper.Update(dish);
     }
@@ -103,18 +97,12 @@ public class DishServiceImpl implements DishService {
      * @param dishDTO 菜品数据传输对象
      */
     public void add(DishDTO dishDTO) {
-        LocalDateTime now = LocalDateTime.now();
-        Long idConstant = BaseContext.getCurrentId();
         Dish dish = Dish.builder()
                 .name(dishDTO.getName())
                 .categoryId(dishDTO.getCategoryId())
                 .price(dishDTO.getPrice())
                 .image(dishDTO.getImage())
                 .description(dishDTO.getDescription())
-                .createTime(now)
-                .updateTime(now)
-                .createUser(idConstant)
-                .updateUser(idConstant)
                 .build();
         if (dishDTO.getStatus() == null) dish.setStatus(1);
         else dish.setStatus(dishDTO.getStatus());
@@ -144,8 +132,6 @@ public class DishServiceImpl implements DishService {
      * @param dishDTO 菜品数据传输对象
      */
     public void Update(DishDTO dishDTO) {
-        Long idConstant = BaseContext.getCurrentId();
-        LocalDateTime now = LocalDateTime.now();
         Long dishId = dishDTO.getId();
         //判断口味是否为空，如果部位空，则修改对应的口味
         if(dishDTO.getFlavors() != null) {
@@ -163,8 +149,6 @@ public class DishServiceImpl implements DishService {
                 .price(dishDTO.getPrice())
                 .image(dishDTO.getImage())
                 .description(dishDTO.getDescription())
-                .updateTime(now)
-                .updateUser(idConstant)
                 .build();
         if (dishDTO.getStatus() == null) dish.setStatus(1);
         else dish.setStatus(dishDTO.getStatus());

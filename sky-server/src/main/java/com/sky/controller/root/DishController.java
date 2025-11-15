@@ -10,7 +10,6 @@ import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +24,10 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
-    /**
+     /**
      * 菜品分页查询
-     * @param dishPageQueryDTO
-     * @return
+     * @param dishPageQueryDTO 分页查询参数
+     * @return 菜品分页结果
      */
     @ApiOperation("菜品分页查询")
     @GetMapping("/page")
@@ -40,8 +39,8 @@ public class DishController {
 
     /**
      * 根据分类id查询菜品
-     * @param categoryId
-     * @return
+     * @param categoryId 分类id
+     * @return 菜品列表
      */
     @GetMapping("/list")
     @ApiOperation("根据分类id查询菜品")
@@ -51,10 +50,10 @@ public class DishController {
         return Result.success(dishes);
     }
 
-    /**
+     /**
      * 根据id查询菜品
-     * @param id
-     * @return
+     * @param id 菜品id
+     * @return 菜品信息
      */
     @ApiOperation("根据id查询菜品")
     @GetMapping("/{id}")
@@ -66,9 +65,9 @@ public class DishController {
 
     /**
      * 菜品启用或禁用
-     * @param status
-     * @param id
-     * @return
+     * @param status 菜品状态（1起售，0停售）
+     * @param id 菜品id
+     * @return 操作成功
      */
     @ApiOperation("菜品启用或禁用")
     @PostMapping("/status/{status}")
@@ -80,8 +79,8 @@ public class DishController {
 
     /**
      * 新增菜品
-     * @param dishDTO
-     * @return
+     * @param dishDTO 菜品传输信息
+     * @return 新增成功
      */
     @ApiOperation("新增菜品")
     @PostMapping
@@ -91,10 +90,10 @@ public class DishController {
         return Result.success("新增成功");
     }
 
-    /**
+     /**
      * 批量删除菜品
-     * @param ids
-     * @return
+     * @param ids 菜品id列表
+     * @return 删除成功
      */
     @ApiOperation("批量删除菜品")
     @DeleteMapping()
@@ -106,8 +105,8 @@ public class DishController {
 
     /**
      * 更新菜品
-     * @param dishDTO
-     * @return
+     * @param dishDTO 菜品传输信息
+     * @return 更新成功
      */
     @ApiOperation("更新菜品")
     @PutMapping

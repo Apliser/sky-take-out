@@ -34,8 +34,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 员工登录
      *
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO 员工登录传输信息
+     * @return 登录成功后的员工实体对象
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
@@ -57,7 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
         }
 
-        if (employee.getStatus() == StatusConstant.DISABLE) {
+        if (employee.getStatus().equals(StatusConstant.DISABLE)) {
             //账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
@@ -68,7 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 新增员工
-     * @param employeeDTO
+     * @param employeeDTO 员工传输信息
      */
     public void add(EmployeeDTO employeeDTO) {
         //校验用户名是否存在
@@ -89,7 +89,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             //身份证格式错误
             throw new IllegalArgumentException(MessageConstant.ID_NUMBER_ERROR);
         }
-        LocalDateTime now = LocalDateTime.now();
         employee = Employee.builder()
                 .username(employeeDTO.getUsername())
                 .password(DigestUtils.md5DigestAsHex(DEFAULT_PASSWORD.getBytes()))
@@ -98,10 +97,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .sex(employeeDTO.getSex())
                 .idNumber(employeeDTO.getIdNumber())
                 .status(StatusConstant.ENABLE)
-                .createTime(now)
-                .updateTime(now)//
-                .createUser(idConstant)
-                .updateUser(idConstant)
                 .build();
         employeeMapper.insert(employee);
     }
@@ -109,8 +104,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 分页查询员工信息
-     * @param employeePageQueryDTO
-     * @return
+     * @param employeePageQueryDTO 员工分页查询参数
+     * @return 员工分页结果
      */
     public PageResult selectByPage(EmployeePageQueryDTO employeePageQueryDTO) {
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
@@ -128,8 +123,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = Employee.builder()
                 .status(status)
                 .id(id)
-                .updateTime(LocalDateTime.now())
-                .updateUser(idConstant)//
                 .build();
         employeeMapper.update(employee);
     }
@@ -161,8 +154,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee2 =Employee.builder()
                 .id(employeePasswordDTO.getId())
                 .password(DigestUtils.md5DigestAsHex(employeePasswordDTO.getNewPassword().getBytes()))
-                .updateTime(LocalDateTime.now())
-                .updateUser(idConstant)
                 .build();
         employeeMapper.update(employee2);
 
