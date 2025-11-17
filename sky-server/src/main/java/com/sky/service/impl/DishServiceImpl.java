@@ -11,9 +11,11 @@ import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
+import com.sky.utils.AliOssUtil;
 import com.sky.vo.DishVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -96,6 +98,8 @@ public class DishServiceImpl implements DishService {
      *
      * @param dishDTO 菜品数据传输对象
      */
+    //加上事务注解
+    @Transactional
     public void add(DishDTO dishDTO) {
         Dish dish = Dish.builder()
                 .name(dishDTO.getName())
@@ -120,6 +124,8 @@ public class DishServiceImpl implements DishService {
      *
      * @param ids 菜品id列表
      */
+    //加上事务注解
+    @Transactional
     public void batchDelete(List<Long> ids) {
         //首先删除菜品对应的口味
         dishFlavorMapper.batchDeleteByDishIds(ids);
@@ -131,16 +137,15 @@ public class DishServiceImpl implements DishService {
      *
      * @param dishDTO 菜品数据传输对象
      */
+    //加上事务注解
+    @Transactional
     public void Update(DishDTO dishDTO) {
         Long dishId = dishDTO.getId();
-        //判断口味是否为空，如果部位空，则修改对应的口味
-        if(dishDTO.getFlavors() != null) {
-            List<DishFlavor> dishFlavors = dishDTO.getFlavors();
-            dishFlavors.forEach(dishFlavor -> {
-                dishFlavor.setDishId(dishId);
-                dishFlavorMapper.updateFlavors(dishFlavor);
-            });//TODO 需要处理菜品口味的列表问题
-        }
+        //判断口味是否为空，如果不为空，则修改对应的口味(先删除后新增菜品口味)
+        if(dishDTO.getFlavors() != null) dishFlavorMapper.deleteBySetmealId(dishId);
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        flavors.forEach(dishFlavor -> dishFlavor.setDishId(dishId));
+        dishFlavorMapper.addFlavors(flavors);
         //更新菜品信息
         Dish dish = Dish.builder()
                 .id(dishId)

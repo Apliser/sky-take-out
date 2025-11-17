@@ -34,4 +34,10 @@ public interface DishFlavorMapper {
      * @param flavors 菜品口味
      */
     void updateFlavors(DishFlavor flavors);
+
+    /**
+     * 根据套餐id删除菜品口味
+     * @param id 套餐id
+     */
+    void deleteBySetmealId(Long id);
 }

@@ -18,4 +18,5 @@ public interface SetMealDishMapper {
     void batchDeleteBySetmealIds(List<Long> ids);
 
     void Update(SetmealDish setmealDish);
+
 }

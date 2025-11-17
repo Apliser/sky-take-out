@@ -34,4 +34,8 @@
             and dish_id = #{dishId}
         </where>
     </select>
+    <!--根据套餐id删除菜品口味-->
+    <delete id="deleteBySetmealId">
+        delete from dish_flavor where dish_id=#{id}
+    </delete>
 </mapper>

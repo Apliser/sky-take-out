@@ -16,6 +16,7 @@ import com.sky.service.SetmealService;
 import com.sky.vo.SetmealVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,8 @@ public class SetmealServiceImpl implements SetmealService {
      * 新增套餐
      * @param setmealDTO 套餐传输信息
      */
+    //加上事务注解
+    @Transactional
     public void add(SetmealDTO setmealDTO) {
         // 新增套餐
         Setmeal setmeal = Setmeal.builder()
@@ -51,6 +54,7 @@ public class SetmealServiceImpl implements SetmealService {
         List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
         setmealDishes.forEach(setmealDish -> {
             setmealDish.setSetmealId(setmealId);
+            if(setmealDish.getCopies() == null) setmealDish.setCopies(59); //TODO修复剩余分数的问题
             setMealDishMapper.add(setmealDish);
         });
 
@@ -102,6 +106,8 @@ public class SetmealServiceImpl implements SetmealService {
      * @param ids 套餐id列表
      * @return 删除的套餐列表
      */
+    //加上事务注解
+    @Transactional
     public Long batchDelete(List<Long> ids) {
         //删除套餐与菜品的关系
         setMealDishMapper.batchDeleteBySetmealIds(ids);
@@ -129,6 +135,8 @@ public class SetmealServiceImpl implements SetmealService {
      * @param setmealDTO 套餐传输信息
      * @return 更新的行数
      */
+    //加上事务注解
+    @Transactional
     public Long Update(SetmealDTO setmealDTO) {
         List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
         //设置套餐id
