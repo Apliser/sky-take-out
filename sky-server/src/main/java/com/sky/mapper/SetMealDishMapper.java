@@ -19,4 +19,5 @@ public interface SetMealDishMapper {
 
     void Update(SetmealDish setmealDish);
 
+    Integer QueryByDishId(Long id);
 }

@@ -6,12 +6,13 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.exception.BaseException;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetMealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
-import com.sky.utils.AliOssUtil;
 import com.sky.vo.DishVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class DishServiceImpl implements DishService {
     private DishFlavorMapper dishFlavorMapper;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private SetMealDishMapper setMealDishMapper;
 
      /**
      * 根据分类id查询菜品
@@ -128,6 +131,12 @@ public class DishServiceImpl implements DishService {
     @Transactional
     public void batchDelete(List<Long> ids) {
         //首先删除菜品对应的口味
+        ids.forEach(id -> {
+            Integer result = setMealDishMapper.QueryByDishId(id);
+            Integer status = dishMapper.QueryById(id).getStatus();
+            if(status == 1) throw new BaseException("该菜品已起售，不能删除");
+            if(result > 0)  throw new BaseException("该菜品已被套餐关联，不能删除");
+        });
         dishFlavorMapper.batchDeleteByDishIds(ids);
         dishMapper.batchDelete(ids);
     }

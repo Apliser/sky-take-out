@@ -54,7 +54,7 @@ public class SetmealServiceImpl implements SetmealService {
         List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
         setmealDishes.forEach(setmealDish -> {
             setmealDish.setSetmealId(setmealId);
-            if(setmealDish.getCopies() == null) setmealDish.setCopies(59); //TODO修复剩余分数的问题
+            if(setmealDish.getCopies() == null) setmealDish.setCopies(59); //TODO修复剩余份数的问题
             setMealDishMapper.add(setmealDish);
         });
 

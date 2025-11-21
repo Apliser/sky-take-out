@@ -29,11 +29,17 @@
         </foreach>
     </delete>
 
+
     <!--根据套餐id查询套餐包含的菜品-->
     <select id="QueryBySetmealId" resultType="com.sky.entity.SetmealDish">
         select * from setmeal_dish
         <where>
             setmeal_id = #{setmealId}
         </where>
+    </select>
+
+    <!--根据菜品id查询套餐包含的菜品数量-->
+    <select id="QueryByDishId" resultType="java.lang.Integer">
+        select count(*) from setmeal_dish where dish_id = #{dishId}
     </select>
 </mapper>
