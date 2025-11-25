@@ -2,7 +2,7 @@ package com.sky.controller.user;
 
 
 import com.sky.result.Result;
-import com.sky.service.ShopService;
+import com.sky.service.Interface.root.ShopService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Api(tags = "用户端店铺接口")
 @RequestMapping("/user/shop/")
-public class ShopController {
+public class UserShopController {
 
     @Autowired
     private ShopService shopService;

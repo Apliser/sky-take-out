@@ -1,4 +1,4 @@
-package com.sky.service;
+package com.sky.service.Interface.root;
 
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
@@ -15,17 +15,20 @@ public interface EmployeeService {
      * @return
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
+
     /**
      * 新增员工
      * @param employeeDTO
      */
     void add(EmployeeDTO employeeDTO);
+
     /**
      * 分页查询员工信息
      * @param employeePageQueryDTO
      * @return
      */
     PageResult selectByPage(EmployeePageQueryDTO employeePageQueryDTO);
+
     /**
      * 启用或禁用员工账号
      * @param status 启用或禁用状态码

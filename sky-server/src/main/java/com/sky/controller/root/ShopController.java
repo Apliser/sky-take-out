@@ -2,7 +2,7 @@ package com.sky.controller.root;
 
 
 import com.sky.result.Result;
-import com.sky.service.ShopService;
+import com.sky.service.Interface.root.ShopService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,4 @@
-package com.sky.service;
-
-import org.springframework.stereotype.Service;
+package com.sky.service.Interface.root;
 
 
 public interface ShopService {

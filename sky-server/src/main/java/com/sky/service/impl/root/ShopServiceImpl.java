@@ -1,6 +1,6 @@
-package com.sky.service.impl;
+package com.sky.service.impl.root;
 
-import com.sky.service.ShopService;
+import com.sky.service.Interface.root.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;

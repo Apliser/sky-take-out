@@ -18,3 +18,6 @@ sky:
     access-key-id: ${OSS_ACCESS_KEY_ID} #使用自己电脑环境变量中的id和secret
     access-key-secret: ${OSS_ACCESS_KEY_SECRET} #上传真是的id和密码，GitHub会检测到安全性，使用环境变量来进行传递
     bucket-name: sky-out-projects
+  wechat:
+    appid: ${WECHAT_APP_ID} #使用环境变量中的微信id和密钥
+    secret: ${WECHAT_SECRET_KEY}
