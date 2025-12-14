@@ -19,6 +19,8 @@ public class ShopServiceImpl implements ShopService {
     public void setStatus(Integer status) {
         //将店铺装填status存储到redis中
         ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+        //先删除旧的状态
+        redisTemplate.delete("status");
         valueOperations.set("status", status.toString());
     }
 
@@ -28,6 +30,6 @@ public class ShopServiceImpl implements ShopService {
      */
     public Integer getStatus() {
         ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
-        return Integer.valueOf((String)valueOperations.get("status"));
+        return (Integer) valueOperations.get("status");
     }
 }

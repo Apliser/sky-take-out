@@ -1,8 +1,10 @@
 package com.sky.service.impl.user;
 
 
+import com.sky.aop.Redis_AOP;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.enumeration.OperationType;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
@@ -32,6 +34,7 @@ public class UserDishServiceImpl implements UserDishService {
      * @return 菜品信息
      */
     @Transactional
+    @Redis_AOP(value = OperationType.SELECT)
     public List<DishVO> QueryByCategoryId(Long categoryId) {
         List<Dish> dishes = dishMapper.QueryByCategoryId(categoryId);
         String categoryName = categoryMapper.QueryById(categoryId).getName();

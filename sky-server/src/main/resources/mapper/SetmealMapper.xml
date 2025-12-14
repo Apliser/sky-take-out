@@ -40,7 +40,7 @@
             id = #{id}
         </where>
     </select>
-    <!-- 根据分类查询套餐信息 -->
+    <!-- 根据分类分页查询套餐信息 -->
     <select id="QueryByPage" resultType="com.sky.entity.Setmeal">
         select setmeal.*
         from setmeal
@@ -50,5 +50,13 @@
             <if test="name != null and name!=''">and name like concat('%',#{name},'%')</if>
         </where>
         order by price desc
+    </select>
+    <!-- 根据分类查询套餐信息 -->
+    <select id="QuerySetmealByCategory" resultType="com.sky.entity.Setmeal">
+        select * from setmeal
+        <where>
+                category_id = #{categoryId}
+                and status = 1
+        </where>
     </select>
 </mapper>

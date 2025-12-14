@@ -2,6 +2,7 @@ package com.sky.service.impl.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.JsonObject;
+import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.UserLoginDTO;
 import com.sky.entity.User;
 import com.sky.exception.BaseException;
@@ -63,21 +64,21 @@ public class UserLoginServiceImpl implements UserLoginService {
         }
         //判断用户是否存在，如果不存在,则先注册
         User user = userMapper.QueryByOpenid(openid);
-        Long id = null;
+        Long userId = null;
         //不存在
         if(user==null){
             user = new User();
             user.setOpenid(openid);
             user.setCreateTime(now);
-            id = userMapper.insert(user);
+            userId = userMapper.insert(user);
         }
         //存在
-        id = user.getId();
+        userId = user.getId();
         Map<String,Object> claims = new HashMap<>();
-        claims.put("openid",openid);
+        claims.put(JwtClaimsConstant.USER_ID,userId);
         String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(),jwtProperties.getUserTtl(),claims);
         UserLoginVO userLoginVO = UserLoginVO.builder()
-                .id(id)
+                .id(userId)
                 .token(token)
                 .openid(openid)
                 .build();

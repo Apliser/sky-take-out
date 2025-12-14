@@ -7,6 +7,7 @@ import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -55,4 +56,10 @@ public interface CategoryMapper {
      * @return 分类信息
      */
     Category QueryById(Long id);
+
+    /**
+     * 查询所有分类
+     * @return 分类列表
+     */
+    List<Category> QueryAll();
 }

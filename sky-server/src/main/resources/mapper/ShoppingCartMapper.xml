@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.mapper.ShoppingCartMapper">
+    <!--添加购物车-->
+    <insert id="Insert">
+        insert into shopping_cart (user_id, name, dish_id, setmeal_id, dish_flavor, number, amount, create_time, image)
+        values (#{userId}, #{name}, #{dishId}, #{setmealId}, #{dishFlavor}, #{number}, #{amount}, #{createTime},
+                #{image})
+    </insert>
+    <!--跟新购物车-->
+    <update id="Update">
+        update shopping_cart set number = #{number},dish_flavor = #{dishFlavor},create_time = #{createTime}
+        where
+        user_id = #{userId}
+        <if test="dishId != null">
+            and dish_id = #{dishId}
+        </if>
+        <if test="setmealId != null">
+            and setmeal_id = #{setmealId}
+        </if>
+    </update>
+
+    <!-- 删除购物车 -->
+    <delete id="Delete">
+        delete
+        from shopping_cart
+        where
+        user_id = #{userId}
+        <if test="dishId != null">
+            and dish_id = #{dishId}
+        </if>
+        <if test="setmealId != null">
+            and setmeal_id = #{setmealId}
+        </if>
+
+    </delete>
+
+    <!-- 清空购物车 -->
+    <delete id="ClearAll">
+        delete from shopping_cart where user_id = #{userId}
+    </delete>
+
+    <!-- 查询所有购物车 -->
+    <select id="QueryAll" resultType="com.sky.entity.ShoppingCart">
+        select * from shopping_cart
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <!--根据id查询购物车-->
+    <select id="QueryByIds" resultType="com.sky.entity.ShoppingCart">
+        Select * from shopping_cart
+        <where>
+            user_id = #{userId}
+            <if test="dishId != null">
+                and dish_id = #{dishId}
+            </if>
+            <if test="setmealId != null">
+                and setmeal_id = #{setmealId}
+            </if>
+        </where>
+    </select>
+</mapper>

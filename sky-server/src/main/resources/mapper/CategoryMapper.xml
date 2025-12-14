@@ -51,4 +51,8 @@
             and id=#{id}
         </where>
     </select>
+    <!--查询所有分类-->
+    <select id="QueryAll" resultType="com.sky.entity.Category">
+        select * from category
+    </select>
 </mapper>

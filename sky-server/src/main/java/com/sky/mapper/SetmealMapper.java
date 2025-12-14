@@ -24,4 +24,6 @@ public interface SetmealMapper {
 
     @AutoFillPublic(value = OperationType.UPDATE)
     Long Update(Setmeal setmeal);
+
+    List<Setmeal> QuerySetmealByCategory(Long categoryId);
 }
