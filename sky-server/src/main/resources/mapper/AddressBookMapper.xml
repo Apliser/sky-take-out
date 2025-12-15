@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.mapper.AddressBookMapper">
+
+    <!-- 插入地址 -->
+    <insert id="insertAddressBook" parameterType="AddressBook">
+        insert into address_book
+        (user_id, consignee, phone, sex, province_code, province_name, city_code, city_name, district_code, district_name, detail, label, is_default)
+        values
+        (#{userId}, #{consignee}, #{phone}, #{sex}, #{provinceCode}, #{provinceName}, #{cityCode}, #{cityName}, #{districtCode}, #{districtName}, #{detail}, #{label}, #{isDefault})
+    </insert>
+
+    <!-- 设置用户所有地址为非默认 -->
+    <update id="setNotDefaultAddressBook">
+        update address_book set is_default = 0 where user_id = #{userId}
+    </update>
+
+    <!-- 设置用户默认地址 -->
+    <update id="setDefaultAddressBook">
+        update address_book set is_default = 1
+        where id = #{id} and user_id = #{userId}
+    </update>
+
+    <!-- 根据id更新地址 -->
+    <update id="UpdateById" parameterType="AddressBook">
+        update address_book
+        set consignee = #{consignee}, phone = #{phone}, sex = #{sex}, province_code = #{provinceCode}, province_name = #{provinceName}, city_code = #{cityCode}, city_name = #{cityName}, district_code = #{districtCode}, district_name = #{districtName}, detail = #{detail}, label = #{label}
+        where id = #{id} and user_id = #{userId}
+    </update>
+
+    <!-- 删除地址 -->
+    <delete id="DeleteById">
+        delete from address_book where id = #{id} and user_id = #{userId}
+    </delete>
+
+    <!-- 查询用户所有地址 -->
+    <select id="QueryAllAddressBook" resultType="com.sky.entity.AddressBook">
+        select * from address_book where user_id = #{userId}
+    </select>
+    <select id="QueryDefaultAddressBook" resultType="com.sky.entity.AddressBook">
+        select * from address_book
+        <where>
+            user_id = #{userId} and is_default = 1
+        </where>
+    </select>
+
+    <!--根据id查询地址-->
+    <select id="QueryById" resultType="com.sky.entity.AddressBook">
+        select * from address_book
+        where id = #{id} and user_id = #{userId}
+    </select>
+</mapper>

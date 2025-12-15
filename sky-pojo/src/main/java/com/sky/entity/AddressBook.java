@@ -23,7 +23,7 @@ public class AddressBook implements Serializable {
     //用户id
     private Long userId;
 
-    //收货人
+    //联系人
     private String consignee;
 
     //手机号
